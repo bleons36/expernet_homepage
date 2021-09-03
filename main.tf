@@ -15,11 +15,6 @@ provider "docker" {
   host = "unix:///var/run/docker.sock"
 }
 
-# Pulls the image
-resource "docker_image" "ubuntu" {
-  name = "ubuntu:latest"
-}
-
 resource "docker_image" "ubuntu" {
   name = "ubuntu:latest"
 }
