@@ -5,7 +5,7 @@ provider "aws" {
 terraform {
   required_providers {
     docker = {
-      source = "kreuzwerker/docker"
+      source  = "kreuzwerker/docker"
       version = "2.15.0"
     }
   }
@@ -15,18 +15,13 @@ provider "docker" {
   host = "unix:///var/run/docker.sock"
 }
 
-resource "docker_image" "nginx" {
-  name = "nginx:latest"
+# Pulls the image
+resource "docker_image" "ubuntu" {
+  name = "ubuntu:latest"
 }
 
-resource "docker_container" "nginx" {
-  image = docker_image.nginx.latest
-  name  = "training"
-  ports {
-    internal = 80
-    external = 80
-  }
-}
+
+
 data "aws_ami" "ubuntu" {
   most_recent = true
 
@@ -42,6 +37,7 @@ data "aws_ami" "ubuntu" {
 
   owners = ["099720109477"] # Canonical
 }
+
 
 resource "aws_instance" "ubuntu" {
   ami           = data.aws_ami.ubuntu.id
