@@ -2,6 +2,27 @@ provider "aws" {
   region = var.region
 }
 
+terraform {
+  required_providers {
+    docker = {
+      source = "kreuzwerker/docker"
+    }
+  }
+}
+
+resource "docker_image" "nginx" {
+  name = "nginx:latest"
+}
+
+resource "docker_container" "nginx" {
+  image = docker_image.nginx.latest
+  name  = "training"
+  ports {
+    internal = 80
+    external = 80
+  }
+}
+
 data "aws_ami" "ubuntu" {
   most_recent = true
 
@@ -25,4 +46,6 @@ resource "aws_instance" "ubuntu" {
   tags = {
     Name = var.instance_name
   }
+  
+  
 }
